@@ -9,8 +9,6 @@ public class ManagerSkin : MonoBehaviour
     public Image sr;
     public List<Sprite> skins = new List<Sprite>();
     private int selectedskin = 0;
-    public GameObject playerskin;
-
 
     public void NextOption()
     {
@@ -20,6 +18,7 @@ public class ManagerSkin : MonoBehaviour
             selectedskin = 0;
         }
         sr.sprite = skins[selectedskin];
+        MultiplayerManager.Instance.SelectedSkin = selectedskin;
     }
 
     public void BackOption()
@@ -30,5 +29,6 @@ public class ManagerSkin : MonoBehaviour
             selectedskin = skins.Count-1;
         }
         sr.sprite = skins[selectedskin];
+        MultiplayerManager.Instance.SelectedSkin = selectedskin;
     }
 }

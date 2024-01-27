@@ -15,7 +15,6 @@ public class CharacterSpawner : MonoBehaviour
             // Create a unique position for the player
             Vector3 spawnPosition = new Vector3((player.RawEncoded % runner.Config.Simulation.PlayerCount) -2.5f, -1.5f, 0);
             NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
-            networkPlayerObject.GetComponent<PlayerManager>().SpawnAtPosition(Vector3.zero);
             // Keep track of the player avatars for easy access
             _spawnedCharacters.Add(player, networkPlayerObject);
         }
@@ -29,5 +28,12 @@ public class CharacterSpawner : MonoBehaviour
             _spawnedCharacters.Remove(player);
         }
     }
+
+    /*private void InitializeObjBeforeSpawn(NetworkRunner runner, NetworkObject obj)
+    {
+        var behaviour = obj.GetComponent<PlayerManager>();
+        behaviour.SkinIndex = MultiplayerManager.Instance.SelectedSkin;
+        Debug.Log("SELECTED SKIN IS " + MultiplayerManager.Instance.SelectedSkin);
+    }*/
 }
 

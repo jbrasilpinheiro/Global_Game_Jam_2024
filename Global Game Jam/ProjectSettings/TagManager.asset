@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - MapCollision
+  - PlayerCharacter
   layers:
   - Default
   - TransparentFX
@@ -44,4 +45,10 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 2528601263
+    locked: 0
+  - name: Weapon
+    uniqueID: 186086727
+    locked: 0
+  - name: King
+    uniqueID: 2808871927
     locked: 0

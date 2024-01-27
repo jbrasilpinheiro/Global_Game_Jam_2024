@@ -11,22 +11,28 @@ public class MultiplayerManager : MonoBehaviour, INetworkRunnerCallbacks
 {
     [SerializeField] private NetworkPrefabRef _playerPrefab;
     private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
-
+    public int SelectedSkin;
     private NetworkRunner _runner;
+    public Dictionary<PlayerRef, NetworkObject> SpawnedCharacters => _spawnedCharacters;
 
-    private void OnGUI()
+    public static MultiplayerManager Instance;
+
+    private void Awake()
     {
-        if (_runner == null)
+        if(Instance == null)
         {
-            if (GUI.Button(new Rect(0, 0, 200, 40), "Host"))
-            {
-                StartGame(GameMode.Host);
-            }
-            if (GUI.Button(new Rect(0, 40, 200, 40), "Join"))
-            {
-                StartGame(GameMode.Client);
-            }
+            Instance = this;
         }
+    }
+
+    public void OnHostClicked()
+    {
+        StartGame(GameMode.Host);
+    }
+
+    public void OnJoinClicked()
+    {
+        StartGame(GameMode.Client);
     }
 
 
@@ -103,7 +109,6 @@ public class MultiplayerManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
-        Debug.Log("Player joined");
         if (runner.IsServer)
         {
             // Create a unique position for the player
