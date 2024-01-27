@@ -833,13 +833,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sr: {fileID: 2041017077}
   skins:
-  - {fileID: 21300000, guid: 3eda60f448f6fdf48b0f5c8d7d63d1e9, type: 3}
-  - {fileID: 21300000, guid: 269943da722dfec4ca875243f12adf38, type: 3}
-  - {fileID: 21300000, guid: 65edee0e07b99964c84a13fe1d852874, type: 3}
-  - {fileID: 21300000, guid: e78cece052669cd43a535e406b868d36, type: 3}
-  - {fileID: 21300000, guid: 2668fb71448986f48a35e81a25521577, type: 3}
-  - {fileID: 21300000, guid: 95950113450f04d49b13296a54d620ce, type: 3}
-  - {fileID: 21300000, guid: d472d6b74e43eff4681cacac256f20e3, type: 3}
+  - {fileID: 21300000, guid: f0ec2a75e0bbf504580c09350effff0f, type: 3}
+  - {fileID: 21300000, guid: 99f4f8b7f625b2d4d967c9cc72f4a657, type: 3}
+  - {fileID: 21300000, guid: 5f08f36ec5d1b7940bd96a356ae5dcb2, type: 3}
+  - {fileID: 21300000, guid: 1aaf1455023f7fa40ad685b1c6312ff6, type: 3}
+  - {fileID: 21300000, guid: d477d2ab2fca650478a8ff15b9d465da, type: 3}
+  - {fileID: 21300000, guid: 8d671abc76d72c049ae60ce15223ddb9, type: 3}
 --- !u!4 &1240978674
 Transform:
   m_ObjectHideFlags: 0
@@ -1391,7 +1390,7 @@ PrefabInstance:
     - target: {fileID: 5740622782549313010, guid: 5796debd74a9bfc4cb5c4c9bccc26382, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 3eda60f448f6fdf48b0f5c8d7d63d1e9, type: 3}
+      objectReference: {fileID: 21300000, guid: f0ec2a75e0bbf504580c09350effff0f, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
