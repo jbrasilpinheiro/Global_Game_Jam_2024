@@ -53,11 +53,8 @@ public class PlayerManager : NetworkBehaviour
             m_rigidBody2D.Rigidbody.velocity = data.direction.normalized * m_speed;
         }
 
-        if (Object.HasInputAuthority)
-        {
-            //SetMouseLookRotation();
-            MouseLook = GetMouseLookRotation();
-        }
+        SetMouseLookRotation();
+        MouseLook = GetMouseLookRotation();
 
         if (m_rigidBody2D.Rigidbody.velocity.x > 0)
         {
@@ -93,7 +90,7 @@ public class PlayerManager : NetworkBehaviour
 
         Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 10f));
 
-        Vector3 directionToMouse = mouseWorldPosition - transform.position;
+        Vector3 directionToMouse = mouseWorldPosition - m_rigidBody2D.Rigidbody.transform.position;
 
         float angle = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg;
 
