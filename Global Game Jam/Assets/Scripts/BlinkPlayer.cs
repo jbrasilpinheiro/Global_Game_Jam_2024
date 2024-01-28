@@ -1,6 +1,7 @@
 using System.Collections;
 
 using UnityEngine;
+using UnityEngine.U2D;
 
 namespace BarthaSzabolcs.Tutorial_SpriteFlash
 {
@@ -19,8 +20,10 @@ namespace BarthaSzabolcs.Tutorial_SpriteFlash
         #endregion
         #region Private Fields
 
-        // The SpriteRenderer that should flash.
-        private SpriteRenderer spriteRenderer;
+        [SerializeField]
+        private SpriteRenderer spriteHead;
+        [SerializeField]
+        private SpriteRenderer spriteBody;
 
         // The material that was in use, when the script started.
         private Material originalMaterial;
@@ -39,13 +42,7 @@ namespace BarthaSzabolcs.Tutorial_SpriteFlash
 
         void Start()
         {
-            // Get the SpriteRenderer to be used,
-            // alternatively you could set it from the inspector.
-            spriteRenderer = GetComponent<SpriteRenderer>();
-
-            // Get the material that the SpriteRenderer uses, 
-            // so we can switch back to it after the flash ended.
-            originalMaterial = spriteRenderer.material;
+            originalMaterial = spriteHead.material;
         }
 
         #endregion
@@ -67,13 +64,15 @@ namespace BarthaSzabolcs.Tutorial_SpriteFlash
         private IEnumerator FlashRoutine()
         {
             // Swap to the flashMaterial.
-            spriteRenderer.material = flashMaterial;
+            spriteHead.material = flashMaterial;
+            spriteBody.material = flashMaterial;
 
             // Pause the execution of this function for "duration" seconds.
             yield return new WaitForSeconds(duration);
 
             // After the pause, swap back to the original material.
-            spriteRenderer.material = originalMaterial;
+            spriteHead.material = originalMaterial;
+            spriteBody.material = originalMaterial;
 
             // Set the routine to null, signaling that it's finished.
             flashRoutine = null;

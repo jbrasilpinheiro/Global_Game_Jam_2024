@@ -95,7 +95,7 @@ public class MultiplayerManager : MonoBehaviour, INetworkRunnerCallbacks
         Vector3 mousePosition = Input.mousePosition;
         Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 10f));
         data.mouseDir = mouseWorldPosition;
-
+        data.Buttons.Set(InputButton.ATTACK, Input.GetMouseButtonDown(0));
 
         input.Set(data);
     }

@@ -1,11 +1,7 @@
+using BarthaSzabolcs.Tutorial_SpriteFlash;
 using Fusion;
-using Fusion.Addons.Physics;
-using Fusion.Sockets;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using Zenject.SpaceFighter;
 using NetworkRigidbody2D = Fusion.Addons.Physics.NetworkRigidbody2D;
 
 
@@ -21,6 +17,18 @@ public class PlayerManager : NetworkBehaviour
     private Transform m_spriteTransform;
     [SerializeField]
     private Transform m_weaponLook;
+    [SerializeField]
+    private Animator m_attackAnimator;
+    [SerializeField]
+    private Collider2D m_gloveCollider;
+    [SerializeField]
+    private SimpleFlash m_flash;
+    [Networked]
+    public NetworkButtons PrevButtons { get; set; }
+    private float m_cooldownTreshold = 2.5f;
+    private float m_attackBufferTime = 0;
+    public bool Bounce;
+
     [Networked]
     public int SkinIndex { get; set; }
     [Networked]
@@ -30,9 +38,15 @@ public class PlayerManager : NetworkBehaviour
     [Networked]
     public bool PlayerRunning { get; set; }
     [Networked]
+    public int Life { get; set; }
+    [Networked]
     public Vector3 MouseLook { get; set; }
+    [Networked]
+    public Vector3 AttackerPos { get; set; }
+
     private ChangeDetector _changeDetector;
     public SpriteRenderer HeadSprite;
+    private Coroutine m_bounceRoutine;
 
     private void Start()
     {
@@ -41,10 +55,21 @@ public class PlayerManager : NetworkBehaviour
 
     public override void FixedUpdateNetwork() 
     {
-        if (GetInput(out InputData data))
+        if (GetInput<InputData>(out InputData data))
         {
+            var pressed = data.GetButtonPressed(PrevButtons);
+            PrevButtons = data.Buttons;
             m_rigidBody2D.Rigidbody.velocity = data.direction.normalized * m_speed;
             SetMouseLookRotation(GetMouseLookRotation(data.mouseDir));
+            Attack(pressed);
+        }
+
+        if (Bounce)
+        {
+            m_rigidBody2D.Rigidbody.AddForce(-AttackerPos.normalized * 100000 * Time.deltaTime);
+            //DoBounceMoveFromAttack(AttackerPos);
+            if(m_bounceRoutine == null)
+                m_bounceRoutine = StartCoroutine(BounceRoutine());
         }
 
         if (m_rigidBody2D.Rigidbody.velocity.x > 0)
@@ -68,6 +93,46 @@ public class PlayerManager : NetworkBehaviour
             m_animator.SetBool("IsRunning", false);
             PlayerRunning = false;
         }
+    }
+
+    private void Attack(NetworkButtons pressedButtons)
+    {
+        if (pressedButtons.IsSet(InputButton.ATTACK) && CalculateAttackBuffer())
+        {
+            m_attackBufferTime = Runner.SimulationTime;
+            DoAttackAnimation();
+            StartCoroutine(DoColliderEnableRoutine());
+        }
+    }
+
+    public IEnumerator DoColliderEnableRoutine()
+    {
+        m_gloveCollider.enabled = true;
+        yield return new WaitForEndOfFrame();
+        m_gloveCollider.enabled = false;
+    }
+
+    public void DoAttackAnimation()
+    {
+        m_attackAnimator.SetTrigger("Hit");
+    }
+
+    public IEnumerator BounceRoutine()
+    {
+        yield return new WaitForSeconds(.5f);
+        Bounce = false;
+        m_bounceRoutine = null;
+    }
+
+    [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.StateAuthority)]
+    public void RPC_Attack()
+    {
+        //SkinIndex = index;
+    }
+
+    public bool CalculateAttackBuffer()
+    {
+        return (Runner.SimulationTime >= (m_cooldownTreshold + m_attackBufferTime));
     }
 
     public void SetMouseLookRotation(Vector3 dir)
@@ -101,10 +166,30 @@ public class PlayerManager : NetworkBehaviour
                 case nameof(PlayerDir):
                     OnPlayerDirectionChanged(PlayerDir);
                     break;
-                /*case nameof(MouseLook):
-                    SetMouseLookRotation(MouseLook);
+                case nameof(PrevButtons):
+                    Attack(PrevButtons);
+                    break;
+                case nameof(Life):
+                    TakeDamage(Life);
+                    break;
+                /*case nameof(AttackerPos):
+                    DoBounceMoveFromAttack(AttackerPos);                 
                     break;*/
             }
+        }
+    }
+
+    public void DoBounceMoveFromAttack(Vector3 damagerPos)
+    {
+        //m_rigidBody2D.Rigidbody.AddForce(-damagerPos.normalized * 100, ForceMode2D.Impulse);
+    }
+
+    public void TakeDamage(int life)
+    {
+        m_flash.Flash();
+        if (life <= 0)
+        {
+            
         }
     }
 
