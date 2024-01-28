@@ -40,11 +40,11 @@ public class PlayerManager : NetworkBehaviour
         //StartCoroutine(SkindIndexRoutine());
     }
 
-    public IEnumerator SkindIndexRoutine()
+/*    public IEnumerator SkindIndexRoutine()
     {
         yield return new WaitForEndOfFrame();
         SkinIndex = MultiplayerManager.Instance.SelectedSkin;
-    }
+    }*/
 
     public override void FixedUpdateNetwork() 
     {
@@ -53,8 +53,11 @@ public class PlayerManager : NetworkBehaviour
             m_rigidBody2D.Rigidbody.velocity = data.direction.normalized * m_speed;
         }
 
-        SetMouseLookRotation();
-        MouseLook = GetMouseLookRotation();
+        if (Object.HasInputAuthority)
+        {
+            //SetMouseLookRotation();
+            MouseLook = GetMouseLookRotation();
+        }
 
         if (m_rigidBody2D.Rigidbody.velocity.x > 0)
         {
