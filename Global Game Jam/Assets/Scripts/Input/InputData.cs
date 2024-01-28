@@ -7,7 +7,7 @@ public enum InputButton
 {
     LEFT = 1 << 0,
     RIGHT = 1 << 1,
-    RESPAWN = 1 << 3,
+    ATTACK = 1 << 3,
     JUMP = 1 << 4,
 }
 
