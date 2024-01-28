@@ -80,7 +80,6 @@ MonoBehaviour:
   _PlayerID: 0
   _PlayerDir: 0
   _PlayerRunning: 0
-  _MouseLook: {x: 0, y: 0, z: 0}
   HeadSprite: {fileID: 3784476951358643423}
 --- !u!50 &6042578412313685212
 Rigidbody2D:
@@ -552,7 +551,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SyncScale: 0
   SyncParent: 0
-  _autoAOIOverride: 0
+  _autoAOIOverride: 1
   DisableSharedModeInterpolation: 0
 --- !u!1 &9160946844577181836
 GameObject:
