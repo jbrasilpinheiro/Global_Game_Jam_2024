@@ -23,7 +23,7 @@ public class InputController : NetworkBehaviour, INetworkRunnerCallbacks
     {
         InputData currentInput = new InputData();
 
-        currentInput.Buttons.Set(InputButton.RESPAWN, Input.GetKey(KeyCode.R));
+        currentInput.Buttons.Set(InputButton.ATTACK, Input.GetKey(KeyCode.R));
         currentInput.Buttons.Set(InputButton.JUMP, Input.GetKey(KeyCode.Space));
         currentInput.Buttons.Set(InputButton.LEFT, Input.GetKey(KeyCode.A));
         currentInput.Buttons.Set(InputButton.RIGHT, Input.GetKey(KeyCode.D));

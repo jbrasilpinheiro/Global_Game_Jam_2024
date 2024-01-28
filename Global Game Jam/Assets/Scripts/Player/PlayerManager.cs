@@ -37,24 +37,15 @@ public class PlayerManager : NetworkBehaviour
     private void Start()
     {
         SetupCharacter(Vector3.zero);
-        //StartCoroutine(SkindIndexRoutine());
     }
-
-/*    public IEnumerator SkindIndexRoutine()
-    {
-        yield return new WaitForEndOfFrame();
-        SkinIndex = MultiplayerManager.Instance.SelectedSkin;
-    }*/
 
     public override void FixedUpdateNetwork() 
     {
         if (GetInput(out InputData data))
         {
             m_rigidBody2D.Rigidbody.velocity = data.direction.normalized * m_speed;
+            SetMouseLookRotation(GetMouseLookRotation(data.mouseDir));
         }
-
-        SetMouseLookRotation(GetMouseLookRotation());
-        MouseLook = GetMouseLookRotation();
 
         if (m_rigidBody2D.Rigidbody.velocity.x > 0)
         {
@@ -84,13 +75,9 @@ public class PlayerManager : NetworkBehaviour
         m_weaponLook.transform.eulerAngles = dir;
     }
 
-    public Vector3 GetMouseLookRotation()
+    public Vector3 GetMouseLookRotation(Vector3 mouseWorldPosition)
     {
-        Vector3 mousePosition = Input.mousePosition;
-
-        Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 10f));
-
-        Vector3 directionToMouse = mouseWorldPosition - m_rigidBody2D.Rigidbody.transform.position;
+        Vector2 directionToMouse = (Vector2)mouseWorldPosition - m_rigidBody2D.Rigidbody.position;
 
         float angle = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg;
 
@@ -114,9 +101,9 @@ public class PlayerManager : NetworkBehaviour
                 case nameof(PlayerDir):
                     OnPlayerDirectionChanged(PlayerDir);
                     break;
-                case nameof(MouseLook):
+                /*case nameof(MouseLook):
                     SetMouseLookRotation(MouseLook);
-                    break;
+                    break;*/
             }
         }
     }

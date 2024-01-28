@@ -15,6 +15,7 @@ public struct InputData : INetworkInput
 {
     public Vector3 direction;
     public NetworkButtons Buttons;
+    public Vector3 mouseDir;
 
     public bool GetButton(InputButton button)
     {

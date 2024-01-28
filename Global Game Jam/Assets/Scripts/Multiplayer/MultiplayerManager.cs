@@ -92,6 +92,11 @@ public class MultiplayerManager : MonoBehaviour, INetworkRunnerCallbacks
         data.direction.x = Input.GetAxisRaw("Horizontal");
         data.direction.y = Input.GetAxisRaw("Vertical");
 
+        Vector3 mousePosition = Input.mousePosition;
+        Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 10f));
+        data.mouseDir = mouseWorldPosition;
+
+
         input.Set(data);
     }
 
