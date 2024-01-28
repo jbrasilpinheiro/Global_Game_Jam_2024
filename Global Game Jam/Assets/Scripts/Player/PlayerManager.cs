@@ -47,7 +47,7 @@ public class PlayerManager : NetworkBehaviour
         }
         Vector3 mouseDir = GetMouseLookRotation(data.GetMousePosition());
         SetMouseLookRotation(mouseDir);
-        MouseLook = mouseDir;
+        //MouseLook = mouseDir;
 
         if (m_rigidBody2D.Rigidbody.velocity.x > 0)
         {
@@ -103,9 +103,9 @@ public class PlayerManager : NetworkBehaviour
                 case nameof(PlayerDir):
                     OnPlayerDirectionChanged(PlayerDir);
                     break;
-                case nameof(MouseLook):
+                /*case nameof(MouseLook):
                     SetMouseLookRotation(MouseLook);
-                    break;
+                    break;*/
             }
         }
     }
