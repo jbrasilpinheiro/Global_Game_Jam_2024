@@ -1,5 +1,6 @@
 using Fusion;
 using UnityEngine;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 [System.Flags]
 public enum InputButton
@@ -29,4 +30,5 @@ public struct InputData : INetworkInput
     {
         return GetButton(InputButton.LEFT) || GetButton(InputButton.RIGHT);
     }
+
 }

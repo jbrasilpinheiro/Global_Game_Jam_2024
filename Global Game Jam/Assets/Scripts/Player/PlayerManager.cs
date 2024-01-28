@@ -19,6 +19,8 @@ public class PlayerManager : NetworkBehaviour
     private Animator m_animator;
     [SerializeField]
     private Transform m_spriteTransform;
+    [SerializeField]
+    private Transform m_weaponLook;
     [Networked]
     public int SkinIndex { get; set; }
     [Networked]
@@ -27,13 +29,15 @@ public class PlayerManager : NetworkBehaviour
     public int PlayerDir { get; set; }
     [Networked]
     public bool PlayerRunning { get; set; }
+    [Networked]
+    public Vector3 MouseLook { get; set; }
     private ChangeDetector _changeDetector;
     public SpriteRenderer HeadSprite;
 
     private void Start()
     {
         SetupCharacter(Vector3.zero);
-        StartCoroutine(SkindIndexRoutine());
+        //StartCoroutine(SkindIndexRoutine());
     }
 
     public IEnumerator SkindIndexRoutine()
@@ -48,6 +52,9 @@ public class PlayerManager : NetworkBehaviour
         {
             m_rigidBody2D.Rigidbody.velocity = data.direction.normalized * m_speed;
         }
+
+        SetMouseLookRotation();
+        MouseLook = GetMouseLookRotation();
 
         if (m_rigidBody2D.Rigidbody.velocity.x > 0)
         {
@@ -72,6 +79,26 @@ public class PlayerManager : NetworkBehaviour
         }
     }
 
+    public void SetMouseLookRotation()
+    {
+        m_weaponLook.transform.eulerAngles = GetMouseLookRotation();
+    }
+
+    public Vector3 GetMouseLookRotation()
+    {
+        Vector3 mousePosition = Input.mousePosition;
+
+        Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 10f));
+
+        Vector3 directionToMouse = mouseWorldPosition - transform.position;
+
+        float angle = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg;
+
+        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+        return rotation.eulerAngles;
+    }
+
     public override void Render()
     {
         foreach (var change in _changeDetector.DetectChanges(this))
@@ -87,6 +114,10 @@ public class PlayerManager : NetworkBehaviour
                 case nameof(PlayerDir):
                     OnPlayerDirectionChanged(PlayerDir);
                     break;
+                case nameof(MouseLook):
+                    SetMouseLookRotation();
+                    break;
+
             }
         }
     }
