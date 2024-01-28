@@ -66,9 +66,11 @@ public class PlayerManager : NetworkBehaviour
 
         if (Bounce)
         {
+            /*DoBounceMoveFromAttack(AttackerPos);
+            Bounce = false;*/
+
             m_rigidBody2D.Rigidbody.AddForce(-AttackerPos.normalized * 100000 * Time.deltaTime);
-            //DoBounceMoveFromAttack(AttackerPos);
-            if(m_bounceRoutine == null)
+            if (m_bounceRoutine == null)
                 m_bounceRoutine = StartCoroutine(BounceRoutine());
         }
 
@@ -181,7 +183,7 @@ public class PlayerManager : NetworkBehaviour
 
     public void DoBounceMoveFromAttack(Vector3 damagerPos)
     {
-        //m_rigidBody2D.Rigidbody.AddForce(-damagerPos.normalized * 100, ForceMode2D.Impulse);
+        m_rigidBody2D.Rigidbody.AddForce(-damagerPos.normalized * 100, ForceMode2D.Impulse);
     }
 
     public void TakeDamage(int life)
