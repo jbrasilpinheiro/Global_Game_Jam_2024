@@ -1,4 +1,5 @@
 using BarthaSzabolcs.Tutorial_SpriteFlash;
+using DG.Tweening;
 using Fusion;
 using System.Collections;
 using UnityEngine;
@@ -23,12 +24,14 @@ public class PlayerManager : NetworkBehaviour
     private Collider2D m_gloveCollider;
     [SerializeField]
     private SimpleFlash m_flash;
+    [SerializeField]
+    private CapsuleCollider2D m_capsuleCollider;
     [Networked]
     public NetworkButtons PrevButtons { get; set; }
     private float m_cooldownTreshold = 2.5f;
     private float m_attackBufferTime = 0;
     public bool Bounce;
-
+    public Vector3 CurrentBounceDir;
     [Networked]
     public int SkinIndex { get; set; }
     [Networked]
@@ -51,6 +54,7 @@ public class PlayerManager : NetworkBehaviour
     private void Start()
     {
         SetupCharacter(Vector3.zero);
+        Life = 5;
     }
 
     public override void FixedUpdateNetwork() 
@@ -69,9 +73,12 @@ public class PlayerManager : NetworkBehaviour
             /*DoBounceMoveFromAttack(AttackerPos);
             Bounce = false;*/
 
-            m_rigidBody2D.Rigidbody.AddForce(-AttackerPos.normalized * 100000 * Time.deltaTime);
             if (m_bounceRoutine == null)
+            {
                 m_bounceRoutine = StartCoroutine(BounceRoutine());
+                CurrentBounceDir = AttackerPos - transform.position;
+            }
+            m_rigidBody2D.Rigidbody.AddForce(-CurrentBounceDir.normalized * 100000 * Time.deltaTime);
         }
 
         if (m_rigidBody2D.Rigidbody.velocity.x > 0)
@@ -104,6 +111,7 @@ public class PlayerManager : NetworkBehaviour
             m_attackBufferTime = Runner.SimulationTime;
             DoAttackAnimation();
             StartCoroutine(DoColliderEnableRoutine());
+            AudioManager.Instance.PlayEffect(0);
         }
     }
 
@@ -189,10 +197,35 @@ public class PlayerManager : NetworkBehaviour
     public void TakeDamage(int life)
     {
         m_flash.Flash();
+        CameraShake.Instance.ShakeCamera();
         if (life <= 0)
         {
-            
+            AudioManager.Instance.PlayEffect(2);
+            Vector3 endPos = new Vector3(15, 10, 10);
+            if(transform.position.x <= 0)
+            {
+                endPos = new Vector3(-15, 10, 10);
+            }
+            m_capsuleCollider.enabled = false;
+            m_rigidBody2D.Rigidbody.transform.DORotate(new Vector3(0,0,180), .5f);
+            m_rigidBody2D.Rigidbody.DOJump(endPos, 1, 1, 3);
+            StartCoroutine(RespawnPlayer());
         }
+    }
+
+    public IEnumerator RespawnPlayer()
+    {
+        yield return new WaitForSeconds(5);
+        Respawn();
+    }
+
+    public void Respawn()
+    {
+        m_rigidBody2D.Rigidbody.velocity = Vector3.zero;
+        m_rigidBody2D.Rigidbody.transform.position = Vector3.zero;
+        m_capsuleCollider.enabled = true;
+        m_rigidBody2D.Rigidbody.rotation = 0;
+        Life = 5;
     }
 
     public void OnPlayerColourChanged(int skinIndex)

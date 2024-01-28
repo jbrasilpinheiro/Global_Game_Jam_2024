@@ -13,6 +13,7 @@ public class WeaponCheckCollision : MonoBehaviour
             collision.GetComponent<PlayerManager>().TakeDamage(life);
             collision.GetComponent<PlayerManager>().Bounce = true;
             collision.GetComponent<PlayerManager>().AttackerPos = transform.parent.parent.parent.position;
+            AudioManager.Instance.PlayEffect(1);
         }
     }
 }

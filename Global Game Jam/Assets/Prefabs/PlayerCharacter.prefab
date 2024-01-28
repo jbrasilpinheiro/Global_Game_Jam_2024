@@ -352,6 +352,7 @@ MonoBehaviour:
   m_attackAnimator: {fileID: 3810141955544663137}
   m_gloveCollider: {fileID: 7846412361053209825}
   m_flash: {fileID: 7570530743899562372}
+  m_capsuleCollider: {fileID: 3227331602066781021}
   Bounce: 0
   _SkinIndex: 0
   _PlayerID: 0
