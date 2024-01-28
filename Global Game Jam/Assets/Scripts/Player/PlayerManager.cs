@@ -53,7 +53,7 @@ public class PlayerManager : NetworkBehaviour
             m_rigidBody2D.Rigidbody.velocity = data.direction.normalized * m_speed;
         }
 
-        SetMouseLookRotation();
+        SetMouseLookRotation(GetMouseLookRotation());
         MouseLook = GetMouseLookRotation();
 
         if (m_rigidBody2D.Rigidbody.velocity.x > 0)
@@ -79,9 +79,9 @@ public class PlayerManager : NetworkBehaviour
         }
     }
 
-    public void SetMouseLookRotation()
+    public void SetMouseLookRotation(Vector3 dir)
     {
-        m_weaponLook.transform.eulerAngles = GetMouseLookRotation();
+        m_weaponLook.transform.eulerAngles = dir;
     }
 
     public Vector3 GetMouseLookRotation()
@@ -115,9 +115,8 @@ public class PlayerManager : NetworkBehaviour
                     OnPlayerDirectionChanged(PlayerDir);
                     break;
                 case nameof(MouseLook):
-                    SetMouseLookRotation();
+                    SetMouseLookRotation(MouseLook);
                     break;
-
             }
         }
     }
