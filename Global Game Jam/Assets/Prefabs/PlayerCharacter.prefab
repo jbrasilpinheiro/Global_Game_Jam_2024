@@ -345,7 +345,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_rigidBody2D: {fileID: 8218146752119054237}
-  m_speed: 7
+  m_speed: 4
   m_animator: {fileID: 3826139659861697742}
   m_spriteTransform: {fileID: 2697139810565483519}
   m_weaponLook: {fileID: 6579323124586506818}

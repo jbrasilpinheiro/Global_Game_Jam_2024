@@ -1,11 +1,12 @@
 using UnityEngine;
 using DG.Tweening;
+using TMPro;
 
 public class CameraShake : MonoBehaviour
 {
     public float shakeDuration = 0.5f;
     public float shakeStrength = 0.2f;
-
+    public TextMeshProUGUI textMeshPro;
     private void Start()
     {
         // Exemplo: Chame ShakeCamera() quando quiser iniciar o shake (pode ser chamado de outro script, evento, etc.)
