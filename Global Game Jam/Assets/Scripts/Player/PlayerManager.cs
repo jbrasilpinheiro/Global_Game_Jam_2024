@@ -52,9 +52,9 @@ public class PlayerManager : NetworkBehaviour
         {
             m_rigidBody2D.Rigidbody.velocity = data.direction.normalized * m_speed;
         }
-
-        SetMouseLookRotation(GetMouseLookRotation());
-        MouseLook = GetMouseLookRotation();
+        Vector3 mouseDir = GetMouseLookRotation();
+        SetMouseLookRotation(mouseDir);
+        MouseLook = mouseDir;
 
         if (m_rigidBody2D.Rigidbody.velocity.x > 0)
         {
