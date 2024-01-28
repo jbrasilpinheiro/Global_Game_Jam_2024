@@ -31,4 +31,12 @@ public struct InputData : INetworkInput
         return GetButton(InputButton.LEFT) || GetButton(InputButton.RIGHT);
     }
 
+    public Vector3 GetMousePosition()
+    {
+        Vector3 mousePosition = Input.mousePosition;
+
+        Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 10f));
+        return mouseWorldPosition;
+    }
+
 }
